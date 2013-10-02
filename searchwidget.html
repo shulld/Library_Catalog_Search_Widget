@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+
+<!-- AUTHOR'S NOTE 
+
+Special thanks to Jeff Carleson at Sacramento City College whose library search widget was the inspiration for this project. Learn more @ http://scc.losrios.edu/~library/tools/widget/
+
+Search this document for #1, #2, #3, #4, #5, #6, #7, #8, #9 to be taken to the pertinent part of the page that needs to be edited to set up the widget for your environment.
+
+For questions, comments or concerns please contact eric.kowalik@marquette.edu.
+
+!-->
+
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE"/>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta name="description" content="An HTML, CSS, jQuery based widget for an LMS or web site that allows a user to search an EDS catalog and link to various library services.">
+
+
+
+
+
+<title>Library Catalog Search Widget for LMS and Webpages</title>
+
+
+<!-- #1 START CSS CODE
+
+The CSS code below sets the look and feel of the widget, examine the CSS to see what area need to be changed to match your organizations color scheme.
+
+You can put these code in an external stylesheet, but to ease implementation, all the code has been left inline. 
+
+!-->
+
+
+<style type="text/css">
+body 
+{
+	margin: 0;
+	padding: 0;
+	font-size: 62.5%;
+	font-family: Verdana, Arial, Helvetica, sans-serif; /* Sets font size and type */
+	color: #ffffff; /* Sets color of the font, currently white. */
+}
+.container 
+{
+	width: 215px; 	
+	margin: 5px;	
+}
+ul.tabs {
+	margin: 0;
+	float: left;
+	list-style: none;
+	height: 22px;
+	padding-left: 3px;
+	width: 100%;
+}
+ul.tabs li {
+	float: left;
+	height: 18px;
+	line-height: 18px;
+	border: 2px solid #EEAA00; /* Sets the border color of the two top tabs */
+	border-bottom: 1px solid #FFFFFF;	
+	margin-bottom: 10px;
+	margin-right: 4px;
+	background: #FFFFFF;
+	overflow: hidden;
+}
+ul.tabs li a {
+	text-decoration: none;
+	color: #000; /* Sets the link color of the two top tabs */
+	display: block;
+	font-size: 1.1em;
+	padding: 0 10px;
+	font-weight: bold; 
+}
+ul.tabs li a:hover {
+	/* These variables set the background and color of the link in the two top tabs when a patron hovers over the two top tabs.  */
+	background: #003366;
+	color: #FFFFFF;
+}	
+html ul.tabs li.active, html ul.tabs li.active a:hover, html ul.tabs li.active a   {
+	color: #FFFFFF;
+	background: #003366; /* Sets the background color of the tab that is currently selected. */ 	
+	border-bottom: solid #003366;
+}
+.tab_container {
+	border-top: none;
+	clear: both;
+	float: left; 
+	width: 100%;
+	height: 270px;
+	background: #003366; /* Sets the background color of the tab content, i.e. the container that holds the search box, links, etc. */
+	border-radius:5px;
+}
+.tab_content {
+	padding: 10px;
+	font-size: 1.2em;
+}
+.tab_content a {
+	color: #FFFFFF;
+}
+.tab_content h2 {
+	padding-bottom: 5px;	
+	font-size: 1.1em;
+}
+ul.links
+{
+/* Sets the parameters for the 3 links between the search box and the Ask a Librarian logo.  */
+	border-top: 1px solid grey;
+	border-bottom: 1px solid grey;
+	display: block;
+line-height: 1.5em;
+padding: 5px 0 5px 0;
+margin: 15px 0 10px 0;
+list-style-type: none;
+}
+ul.links li:before
+{
+/* Sets the bullet before the 3 links to a double right hand arrow. You can easily change this by adding the unicode of the object you would like instead, i.e. *, >, etc.   */
+    content: '\00BB';
+}
+img.librarian_chat 
+{
+/*  Centers the Ask a Librarian image.   */
+    display: block;
+    margin-left: auto;
+    margin-right: auto 
+}
+</style>
+
+<!-- END STEP #1 CSS !-->
+
+</head>
+<body>
+<div class="container">
+
+
+<!-- #2 START TABS CODE
+
+The two items in this unordered HTML list compose the two tabs at the top of the widget. Change the text here to whatever you would like, but be aware of long titles which will wrap unless you increase the width of the container.
+
+NOTE: To track the number of times the tabs and links in this widget were used, an Event was set up in Google Analytics to track this, that is why there is an onClick on each link. You can remove the onClicks if you do not wish to use Google Analytics Event tracking. 
+
+!-->
+
+
+
+	<ul class="tabs">
+		<li><a href="#tab1" onclick="_gaq.push(['_trackEvent', 'D2L_Search_Widget', 'MARQCATplus']);">MARQCAT<em>plus</em></a></li>
+		<li><a href="#tab2" onclick="_gaq.push(['_trackEvent', 'D2L_Search_Widget', 'Databases']);">Databases</a></li>
+	</ul>
+	<!-- END STEP #2 TABS CODE !-->
+	<div class="tab_container">
+		<div id="tab1" class="tab_content">
+			<h2>Search books & more &raquo;</h2>
+			
+			
+			
+			<!-- #3 START EBSCO EDS SEARCH CODE
+The form code for searching the EBSCO EDS is below. You will need to replace this to fit your own set up.
+ 
+NOTE: function ebscoPreProcess(myForm) code is at the bottom of the page. 
+!-->
+
+
+			<script type="text/javascript">
+//<![CDATA[  
+function ebscoPreProcess(myForm) 
+{
+var selection = document.search.r1;
+for (i=0; i<selection.length; i++)
+  if (selection[i].checked == true)
+  myForm.bquery.value = selection[i].value + myForm.uquery.value;
+}
+			</script>
+			<form action="http://www.mu.edu/library/_includes/catalogPlusSearch.php" method="post" id="encorePlusSearch" target="formWin" onsubmit="return formpop();">
+				<input name="keyword" size="22" value="" type="text">
+				<select name="searchType" style="font-size:.8em;">
+					<option value="keywordplus" selected="selected">MARQCATplus</option>
+					<optgroup label="Other Catalog Searches"></optgroup>
+					<option value="title">&nbsp; Title</option>
+					<option value="author">&nbsp; Author (last, first)</option>
+					<option value="subject">&nbsp; Subject</option>
+					<option value="keyword">&nbsp; Keyword</option>
+					<option value="journal">&nbsp; Journal Title</option>
+					<option value="genre">&nbsp; Form/Genre</option>
+					<option value="callno">&nbsp; Call number</option>
+					<option value="issn">&nbsp; ISBN/ISSN</option>
+				</select>
+				<input name="SORT" value="R" type="hidden">
+				<input value="Search" name="submit" type="submit">
+			</form>
+			
+			<!-- END STEP #3 EBSCO EDS SEARCH CODE !-->
+			
+			
+			
+			
+			<!-- #4 START LINKS CODE
+The HTML ordered list below contains the 3 links you see on the first tab, Research Guides by Subject, Class reserves (Ares) and Items not at Marquette. Change as needed. 
+!-->
+			
+			
+			
+			
+			<ul class="links">
+				<li>
+				<a href="http://www.marquette.edu/library/find/researchguides.shtml" target="_blank" onclick="_gaq.push(['_trackEvent', 'D2L_Search_Widget', 'Research Guides']);"> Research Guides by Subject</a>
+				</li>
+				<li>
+				<a href="https://marquette.ares.atlas-sys.com/ares/" target="_blank" onclick="_gaq.push(['_trackEvent', 'D2L_Search_Widget', 'Class Reserves']);"> Class reserves (Ares)</a>
+				</li>
+				<li>
+				<a href="http://marquette.illiad.oclc.org/illiad/illiad.dll" target="_blank" onclick="_gaq.push(['_trackEvent', 'D2L_Search_Widget', 'Interlibrary Loan']);">Items not at Marquette</a>
+				</li>
+			</ul>
+			
+			<!-- END STEP #4 LINKS CODE !-->
+			
+			
+			
+			<!-- #5 START ASK A LIBRARIAN IM CHAT CODE
+The code references Marquette's Library Help chat window and points to the location of the Ask a Librarian image. You will need to change this to reflect your instuions set up. 
+!-->
+			
+			
+			
+			<a href="#" onclick="window.open('http://libraryh3lp.com/chat/mu_askus@chat.libraryh3lp.com?skin=13600&amp;theme=gota&amp;title=Ask+a+Librarian&amp;identity=librarian&amp;sounds=true#', 'chat', 'resizable=1,width=400,height=400'); return false;"><img title="Click here to go to the Ask a Librarian page" alt="Click here to go to the Ask a Librarian page" class="librarian_chat" src="http://www.marquette.edu/library/images/ask.jpg" width="83" height="53"/></a>
+			
+			
+			
+			<!-- END STEP #5 LINKS CODE !-->
+		
+		</div>
+		
+		
+		
+		<div id="tab2" class="tab_content">
+			<h2>Choose subject or topic &raquo;</h2>
+		
+		
+		
+			<!-- #6 START DATABASE LIST DROP DOWN CODE
+These drop down options take patrons to Marquette's subject or topic database page lists which are in LibGuides. 
+
+NOTE: The jQuery code that opens the link in a new window when the patron hits Go is at the bottom of the page. 
+
+!-->
+
+			<form name="databases">
+				<select name="databases-list" id="databases-list" style="width: 190px;">
+					<option value="http://libguides.marquette.edu/generaldatabases">General &amp; Multidisciplinary</option>
+					<option value="http://libguides.marquette.edu/accountingdatabases">Accounting</option>
+					<option value="http://libguides.marquette.edu/advertisingdatabases">Advertising</option>
+					<option value="http://libguides.marquette.edu/anthropologydatabases">Anthropology</option>
+					<option value="http://libguides.marquette.edu/architecturedatabases">Architecture</option>
+					<option value="http://libguides.marquette.edu/artdatabases">Art</option>
+					<option value="http://libguides.marquette.edu/astronomydatabases">Astronomy</option>
+					<option value="http://libguides.marquette.edu/bioethicsdatabases">Bioethics</option>
+					<option value="http://libguides.marquette.edu/content.php?pid=32799&amp;sid=240374">Biography</option>
+					<option value="http://libguides.marquette.edu/biologydatabases">Biology</option>
+					<option value="http://libguides.marquette.edu/biomedicaldatabases">Biomedical Sciences</option>
+					<option value="http://libguides.marquette.edu/publisherdatabases">Books, Publishers &amp;e Copyright</option>
+					<option value="http://libguides.marquette.edu/brecdatabases">Broadcast &amp; Electronic Communication</option>
+					<option value="http://libguides.marquette.edu/businessdatabases">Business</option>
+					<option value="http://libguides.marquette.edu/chemistrydatabases">Chemistry</option>
+					<option value="http://libguides.marquette.edu/cllsdatabases">Clinical Laboratory Science</option>
+					<option value="http://libguides.marquette.edu/collegedatabases">Colleges &amp; Universities</option>
+					<option value="http://libguides.marquette.edu/communicationdatabases">Communication</option>
+					<option value="http://libguides.marquette.edu/computersciencedatabases">Computer Science</option>
+					<option value="http://libguides.marquette.edu/criminologydatabases">Criminology</option>
+					<option value="http://libguides.marquette.edu/performingartsdatabases">Dance</option>
+					<option value="http://libguides.marquette.edu/dentistrydatabases">Dentistry</option>
+					<option value="http://libguides.marquette.edu/dictionaries">Dictionaries</option>
+					<option value="http://libguides.marquette.edu/directories">Directories</option>
+					<option value="http://libguides.marquette.edu/disputeresolution">Dispute Resolution</option>
+					<option value="http://libguides.marquette.edu/dissertationdatabases">Dissertations</option>
+					<option value="http://libguides.marquette.edu/economicsdatabases">Economics</option>
+					<option value="http://libguides.marquette.edu/educationdatabases">Education</option>
+					<option value="http://libguides.marquette.edu/encyclopedias">Encyclopedias</option>
+					<option value="http://libguides.marquette.edu/engineeringdatabases">Engineering</option>
+					<option value="http://libguides.marquette.edu/envethicsdatabases">Environmental Ethics</option>
+					<option value="http://libguides.marquette.edu/envscidatabases">Environmental Sciences</option>
+					<option value="http://libguides.marquette.edu/ethnicdatabases">Ethnic Studies</option>
+					<option value="http://libguides.marquette.edu/filmdatabases">Film</option>
+					<option value="http://libguides.marquette.edu/financedatabases">Finance</option>
+					<option value="http://libguides.marquette.edu/artdatabases">Fine Arts</option>
+					<option value="http://libguides.marquette.edu/foladatabases">Foreign Languages &amp; Literatures</option>
+					<option value="http://libguides.marquette.edu/foundationdatabases">Foundation and Nonprofit Research</option>
+					<option value="http://libguides.marquette.edu/frenchdatabases">French</option>
+					<option value="http://libguides.marquette.edu/germandatabases">German</option>
+					<option value="http://libguides.marquette.edu/governmentdatabases">Government</option>
+					<option value="http://libguides.marquette.edu/healthdatabases">Health Sciences</option>
+					<option value="http://libguides.marquette.edu/historydatabases">History</option>
+					<option value="http://libguides.marquette.edu/tax">Income Tax Forms and Information</option>
+					<option value="http://libguides.marquette.edu/italiandatabases">Italian</option>
+					<option value="http://libguides.marquette.edu/journalismdatabases">Journalism</option>
+					<option value="http://libguides.marquette.edu/linguisticsdatabases">Language and Linguistics</option>
+					<option value="http://libguides.marquette.edu/lawdatabases">Law</option>
+					<option value="http://libguides.marquette.edu/leadershipdatabases">Leadership Studies</option>
+					<option value="http://libguides.marquette.edu/librarysciencedatabases">Library &amp; Information Science</option>
+					<option value="http://libguides.marquette.edu/literaturedatabases">Literature (English)</option>
+					<option value="http://libguides.marquette.edu/mathdatabases">Mathematics</option>
+					<option value="http://libguides.marquette.edu/medievaldatabases">Medieval Studies</option>
+					<option value="http://libguides.marquette.edu/milwaukeedatabases">Milwaukee</option>
+					<option value="http://libguides.marquette.edu/performingartsdatabases">Music</option>
+					<option value="http://libguides.marquette.edu/newspaperdatabases">Newspapers</option>
+					<option value="http://libguides.marquette.edu/nursingdatabases">Nursing</option>
+					<option value="http://libguides.marquette.edu/performingartsdatabases">Performing Arts</option>
+					<option value="http://libguides.marquette.edu/philosophydatabases">Philosophy</option>
+					<option value="http://libguides.marquette.edu/ptdatabases">Physical Therapy</option>
+					<option value="http://libguides.marquette.edu/padatabases">Physician Assistant</option>
+					<option value="http://libguides.marquette.edu/physicsdatabases">Physics</option>
+					<option value="http://libguides.marquette.edu/poscdatabases">Political Science</option>
+					<option value="http://libguides.marquette.edu/psychologydatabases">Psychology</option>
+					<option value="http://libguides.marquette.edu/prdatabases">Public Relations</option>
+					<option value="http://libguides.marquette.edu/sciencedatabases">Science, general &amp; popular</option>
+					<option value="http://libguides.marquette.edu/sowjdatabases">Social Welfare &amp; Justice</option>
+					<option value="http://libguides.marquette.edu/sociologydatabases">Sociology</option>
+					<option value="http://libguides.marquette.edu/spanishdatabases">Spanish</option>
+					<option value="http://libguides.marquette.edu/sppadatabases">Speech Pathology &amp; Audiology</option>
+					<option value="http://libguides.marquette.edu/sportsdatabases">Sports</option>
+					<option value="http://libguides.marquette.edu/sportsdatabases">Sports Leadership</option>
+					<option value="http://libguides.marquette.edu/statsdatabases">Statistical Resources</option>
+					<option value="http://libguides.marquette.edu/tax">Tax Forms and Information</option>
+					<option value="http://libguides.marquette.edu/performingartsdatabases">Theater Arts</option>
+					<option value="http://libguides.marquette.edu/theodatabases">Theology</option>
+					<option value="http://libguides.marquette.edu/cllsdatabases">Transfusion Medicine</option>
+					<option value="http://libguides.marquette.edu/milwaukeedatabases">Wisconsin</option>
+					<option value="http://libguides.marquette.edu/wostdatabases">Women's and Gender Studies</option>
+				</select>
+				<input type="button" name="Submit" id="Submit" value="Go">
+			</form>
+
+			<!-- END STEP #6 DATABASE LIST DROP DOWN CODE !-->
+
+			<!-- #7 START LINKS CODE
+The HTML ordered list below contains the 3 links you see on the first tab, Research Guides by Subject, Class reserves (Ares) and Items not at Marquette. Change as needed. 
+!-->
+
+			<ul class="links">
+				<li>
+				<a href="http://libguides.marquette.edu/databases" title="Go to complete list of databases" target="_blank" onclick="_gaq.push(['_trackEvent', 'D2L_Search_Widget', 'Databases List']);">A to Z Database List</a>
+				</li>
+				<li>
+				<a href="http://libguides.marquette.edu/newtrialdatabases" title="Scheduled Databases Outages" target="_blank" onclick="_gaq.push(['_trackEvent', 'D2L_Search_Widget', 'New Databases']);">New Databases and Trials</a>
+				</li>
+				<li>
+				<a href="http://www.marquette.edu/library/services/off_campus_access.shtml" title="Get off campus access" target="_blank" onclick="_gaq.push(['_trackEvent', 'D2L_Search_Widget', 'Off Campus']);">Off campus access</a>
+				</li>
+			</ul>
+
+			<!-- END STEP #7 LINKS CODE !-->
+
+			<!-- #8 START ASK A LIBRARIAN IM CHAT CODE
+The code references Marquette's Library Help chat window and points to the location of the Ask a Librarian image. You will need to change this to reflect your instuions set up. 
+!-->
+
+			<a href="#" onclick="window.open('http://libraryh3lp.com/chat/mu_askus@chat.libraryh3lp.com?skin=13600&amp;theme=gota&amp;title=Ask+a+Librarian&amp;identity=librarian&amp;sounds=true#', 'chat', 'resizable=1,width=400,height=400'); return false;"><img title="Click here to go to the Ask a Librarian page" alt="Click here to go to the Ask a Librarian page" class="librarian_chat" src="http://www.marquette.edu/library/images/ask.jpg" width="83" height="53"/></a>
+
+			<!-- END STEP #8 ASK A LIBRARIAN IM CHAT CODE !-->
+
+		</div>
+	</div>
+</div>
+
+
+<!-- #9 START jQuery, JAVASCRIPT AND GOOGLE ANALYTICS CODE
+
+References to the jQuery 1.3 mini library, jQuery code to make the tabs work and open the Databases links open in a new window, function ebscoPreProcess(myForm) and Google Analytics code.
+
+!-->
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
+
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+	//Default Action
+	$(".tab_content").hide(); //Hide all content
+	$("ul.tabs li:first").addClass("active").show(); //Activate first tab
+	$(".tab_content:first").show(); //Show first tab content
+	//On Click Event
+	$("ul.tabs li").click(function() {
+		$("ul.tabs li").removeClass("active"); //Remove any "active" class
+		$(this).addClass("active"); //Add "active" class to selected tab
+		$(".tab_content").hide(); //Hide all tab content
+		var activeTab = $(this).find("a").attr("href"); //Find the rel attribute value to identify the active tab + content
+		$(activeTab).fadeIn(); //Fade in the active content
+		return false;
+	});
+
+
+$('#Submit').click(function() 
+{ 
+	var Link = $('#databases-list').val();
+	window.open(Link,'_blank'); 
+});
+});
+</script>
+
+
+
+<script type="text/javascript">
+//<![CDATA[
+function ebscoPreProcess(myForm) {
+        myForm.bquery.value = myForm.search_prefix.value + myForm.uquery.value;
+}
+//]]>
+</script>
+
+
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-3362315-1']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+<!-- END STEP #9 jQuery, JAVASCRIPT AND GOOGLE ANALYTICS CODE !-->
+</body>
+</html>
