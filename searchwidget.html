@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
 <!-- AUTHOR'S NOTE 
 
@@ -126,6 +126,13 @@ img.librarian_chat
     margin-left: auto;
     margin-right: auto 
 }
+.screenreader 
+{
+/* Hides the label of the form from view, but allows it to still be seen by screen readers.   */
+	position: absolute; 
+	top:0; 
+	left:-9999px
+}
 </style>
 
 <!-- END STEP #1 CSS !-->
@@ -173,9 +180,13 @@ for (i=0; i<selection.length; i++)
   myForm.bquery.value = selection[i].value + myForm.uquery.value;
 }
 			</script>
-			<form action="http://www.mu.edu/library/_includes/catalogPlusSearch.php" method="post" id="encorePlusSearch" target="formWin" onsubmit="return formpop();">
-				<input name="keyword" size="22" value="" type="text">
-				<select name="searchType" style="font-size:.8em;">
+			<form action="http://www.mu.edu/library/_includes/catalogPlusSearch.php" method="post" id="encorePlusSearch" target="_blank">
+				<label for="keyword">
+<span class="screenreader">Keyword to Search</span></label>
+				<input name="keyword" id="keyword" size="22" value="" type="text">
+				<label for="searchType">
+<span class="screenreader">Type of Search</span></label>
+				<select name="searchType" id="searchType" style="font-size:.8em;">
 					<option value="keywordplus" selected="selected">MARQCATplus</option>
 					<optgroup label="Other Catalog Searches"></optgroup>
 					<option value="title">&nbsp; Title</option>
@@ -211,7 +222,7 @@ The HTML ordered list below contains the 3 links you see on the first tab, Resea
 				<a href="https://marquette.ares.atlas-sys.com/ares/" target="_blank" onclick="_gaq.push(['_trackEvent', 'D2L_Search_Widget', 'Class Reserves']);"> Class reserves (Ares)</a>
 				</li>
 				<li>
-				<a href="http://marquette.illiad.oclc.org/illiad/illiad.dll" target="_blank" onclick="_gaq.push(['_trackEvent', 'D2L_Search_Widget', 'Interlibrary Loan']);">Items not at Marquette</a>
+				<a href="https://marquette.illiad.oclc.org/illiad/logon.html" target="_blank" onclick="_gaq.push(['_trackEvent', 'D2L_Search_Widget', 'Interlibrary Loan']);">Items not at Marquette</a>
 				</li>
 			</ul>
 			
@@ -248,6 +259,9 @@ NOTE: The jQuery code that opens the link in a new window when the patron hits G
 !-->
 
 			<form name="databases">
+				
+				<label for="databases-list">
+<span class="screenreader">View Subject Databases</span></label>
 				<select name="databases-list" id="databases-list" style="width: 190px;">
 					<option value="http://libguides.marquette.edu/generaldatabases">General &amp; Multidisciplinary</option>
 					<option value="http://libguides.marquette.edu/accountingdatabases">Accounting</option>
@@ -329,7 +343,7 @@ NOTE: The jQuery code that opens the link in a new window when the patron hits G
 					<option value="http://libguides.marquette.edu/milwaukeedatabases">Wisconsin</option>
 					<option value="http://libguides.marquette.edu/wostdatabases">Women's and Gender Studies</option>
 				</select>
-				<input type="button" name="Submit" id="Submit" value="Go">
+				<input type="button" name="Submit" id="Submit" value="Go to Subject">
 			</form>
 
 			<!-- END STEP #6 DATABASE LIST DROP DOWN CODE !-->
