@@ -43,7 +43,7 @@ body
 }
 .container 
 {
-	width: 215px; 	
+	width: 245px; 	
 	margin: 5px;	
 }
 ul.tabs {
@@ -153,18 +153,18 @@ NOTE: To track the number of times the tabs and links in this widget were used, 
 
 
 	<ul class="tabs">
-		<li><a href="#tab1" onclick="_gaq.push(['_trackEvent', 'D2L_Search_Widget', 'MARQCATplus']);">MARQCAT<em>plus</em></a></li>
+		<li><a href="#tab1" onclick="_gaq.push(['_trackEvent', 'D2L_Search_Widget', 'Research@UWW']);">Research@UWW</a></li>
 		<li><a href="#tab2" onclick="_gaq.push(['_trackEvent', 'D2L_Search_Widget', 'Databases']);">Databases</a></li>
 	</ul>
 	<!-- END STEP #2 TABS CODE !-->
 	<div class="tab_container">
 		<div id="tab1" class="tab_content">
-			<h2>Search books & more &raquo;</h2>
+			<h2>Search articles, books, & more &raquo;</h2>
 			
 			
 			
-			<!-- #3 START EBSCO EDS SEARCH CODE
-The form code for searching the EBSCO EDS is below. You will need to replace this to fit your own set up.
+			<!-- #3 START PRIMO SEARCH CODE
+The form code for searching the PRIMO is below. You will need to replace this to fit your own set up.
  
 NOTE: function ebscoPreProcess(myForm) code is at the bottom of the page. 
 !-->
@@ -180,29 +180,25 @@ for (i=0; i<selection.length; i++)
   myForm.bquery.value = selection[i].value + myForm.uquery.value;
 }
 			</script>
-			<form action="http://www.mu.edu/library/_includes/catalogPlusSearch.php" method="post" id="encorePlusSearch" target="_blank">
-				<label for="keyword">
-<span class="screenreader">Keyword to Search</span></label>
-				<input name="keyword" id="keyword" size="22" value="" type="text">
-				<label for="searchType">
-<span class="screenreader">Type of Search</span></label>
-				<select name="searchType" id="searchType" style="font-size:.8em;">
-					<option value="keywordplus" selected="selected">MARQCATplus</option>
-					<optgroup label="Other Catalog Searches"></optgroup>
-					<option value="title">&nbsp; Title</option>
-					<option value="author">&nbsp; Author (last, first)</option>
-					<option value="subject">&nbsp; Subject</option>
-					<option value="keyword">&nbsp; Keyword</option>
-					<option value="journal">&nbsp; Journal Title</option>
-					<option value="genre">&nbsp; Form/Genre</option>
-					<option value="callno">&nbsp; Call number</option>
-					<option value="issn">&nbsp; ISBN/ISSN</option>
-				</select>
-				<input name="SORT" value="R" type="hidden">
-				<input value="Search" name="submit" type="submit">
+			<form name="primosearch" action="http://uw-primo.hosted.exlibrisgroup.com/primo_library/libweb/action/dlSearch.do" onsubmit="document.getElementById(&quot;primoquery&quot;).value = &quot;any,contains,&quot; + document.getElementById(&quot;_primoquery&quot;).value.replace(/\,/g,&quot; &quot;);" target="_blank">
+				<input type="hidden" name="vid" value="WW" />
+				<input type="hidden" name="institution" value="WW" />
+				<input type="hidden" id="primoquery" name="query" />
+				<input title="search field" id="_primoquery" type="text" maxlength="100" accesskey="s" value="" /><br />
+
+				<select name="search_scope">
+					<option value="default_scope">Search Everything</option>
+					<option value="WW_ALL">Articles</option>
+					<option value="WW_VOY">Books, Media &amp; more (UW Whitewater)</option>
+					<option value="UW_VOY">Books, Media &amp; more (UW System)</option>
+					<option value="WW_CR">Course Reserves</option>
+					<option value="UW_Digital_Collections">UW Digital Collections</option>
+					<option value="WW_archives">Historical Society Archives &amp; WW ARC</option>
+</select><br />
+<input type="submit" value="Search" />
 			</form>
 			
-			<!-- END STEP #3 EBSCO EDS SEARCH CODE !-->
+			<!-- END STEP #3 PRIMO SEARCH CODE !-->
 			
 			
 			
@@ -216,13 +212,13 @@ The HTML ordered list below contains the 3 links you see on the first tab, Resea
 			
 			<ul class="links">
 				<li>
-				<a href="http://www.marquette.edu/library/find/researchguides.shtml" target="_blank" onclick="_gaq.push(['_trackEvent', 'D2L_Search_Widget', 'Research Guides']);"> Research Guides by Subject</a>
+				<a href="http://libguides.uww.edu" target="_blank" onclick="_gaq.push(['_trackEvent', 'D2L_Search_Widget', 'Research Guides']);"> Subject &amp; Course Guides</a>
 				</li>
 				<li>
-				<a href="https://marquette.ares.atlas-sys.com/ares/" target="_blank" onclick="_gaq.push(['_trackEvent', 'D2L_Search_Widget', 'Class Reserves']);"> Class reserves (Ares)</a>
+				<a href="http://uwi-primoalma-prod.hosted.exlibrisgroup.com/primo_library/libweb/action/dlSearch.do?vid=WW&amp;institution=WW&amp;search_scope=WW_CR" target="_blank" onclick="_gaq.push(['_trackEvent', 'D2L_Search_Widget', 'Class Reserves']);"> Course Reserves</a>
 				</li>
 				<li>
-				<a href="https://marquette.illiad.oclc.org/illiad/logon.html" target="_blank" onclick="_gaq.push(['_trackEvent', 'D2L_Search_Widget', 'Interlibrary Loan']);">Items not at Marquette</a>
+				<a href="http://library.uww.edu/get-help/off-campus-login-information" target="_blank" onclick="_gaq.push(['_trackEvent', 'D2L_Search_Widget', 'Off-Campus Access']);"> Off-Campus Access</a>
 				</li>
 			</ul>
 			
@@ -236,7 +232,7 @@ The code references Marquette's Library Help chat window and points to the locat
 			
 			
 			
-			<a href="#" onclick="window.open('http://libraryh3lp.com/chat/mu_askus@chat.libraryh3lp.com?skin=13600&amp;theme=gota&amp;title=Ask+a+Librarian&amp;identity=librarian&amp;sounds=true#', 'chat', 'resizable=1,width=400,height=400'); return false;"><img title="Click here to go to the Ask a Librarian page" alt="Click here to go to the Ask a Librarian page" class="librarian_chat" src="http://www.marquette.edu/library/images/ask.jpg" width="83" height="53"/></a>
+			<a href="#" onclick="window.open('http://library.uww.edu/get-help/ask-a-librarian'); return false;"><img title="Click here to go to the Ask a Librarian page" alt="Click here to go to the Ask a Librarian page" class="librarian_chat" src="http://www.uww.edu/images/library/chatnow.png" width="50" height="48"/></a>
 			
 			
 			
@@ -263,85 +259,16 @@ NOTE: The jQuery code that opens the link in a new window when the patron hits G
 				<label for="databases-list">
 <span class="screenreader">View Subject Databases</span></label>
 				<select name="databases-list" id="databases-list" style="width: 190px;">
-					<option value="http://libguides.marquette.edu/generaldatabases">General &amp; Multidisciplinary</option>
-					<option value="http://libguides.marquette.edu/accountingdatabases">Accounting</option>
-					<option value="http://libguides.marquette.edu/advertisingdatabases">Advertising</option>
-					<option value="http://libguides.marquette.edu/anthropologydatabases">Anthropology</option>
-					<option value="http://libguides.marquette.edu/architecturedatabases">Architecture</option>
-					<option value="http://libguides.marquette.edu/artdatabases">Art</option>
-					<option value="http://libguides.marquette.edu/astronomydatabases">Astronomy</option>
-					<option value="http://libguides.marquette.edu/bioethicsdatabases">Bioethics</option>
-					<option value="http://libguides.marquette.edu/content.php?pid=32799&amp;sid=240374">Biography</option>
-					<option value="http://libguides.marquette.edu/biologydatabases">Biology</option>
-					<option value="http://libguides.marquette.edu/biomedicaldatabases">Biomedical Sciences</option>
-					<option value="http://libguides.marquette.edu/publisherdatabases">Books, Publishers &amp;e Copyright</option>
-					<option value="http://libguides.marquette.edu/brecdatabases">Broadcast &amp; Electronic Communication</option>
-					<option value="http://libguides.marquette.edu/businessdatabases">Business</option>
-					<option value="http://libguides.marquette.edu/chemistrydatabases">Chemistry</option>
-					<option value="http://libguides.marquette.edu/cllsdatabases">Clinical Laboratory Science</option>
-					<option value="http://libguides.marquette.edu/collegedatabases">Colleges &amp; Universities</option>
-					<option value="http://libguides.marquette.edu/communicationdatabases">Communication</option>
-					<option value="http://libguides.marquette.edu/computersciencedatabases">Computer Science</option>
-					<option value="http://libguides.marquette.edu/criminologydatabases">Criminology</option>
-					<option value="http://libguides.marquette.edu/performingartsdatabases">Dance</option>
-					<option value="http://libguides.marquette.edu/dentistrydatabases">Dentistry</option>
-					<option value="http://libguides.marquette.edu/dictionaries">Dictionaries</option>
-					<option value="http://libguides.marquette.edu/directories">Directories</option>
-					<option value="http://libguides.marquette.edu/disputeresolution">Dispute Resolution</option>
-					<option value="http://libguides.marquette.edu/dissertationdatabases">Dissertations</option>
-					<option value="http://libguides.marquette.edu/economicsdatabases">Economics</option>
-					<option value="http://libguides.marquette.edu/educationdatabases">Education</option>
-					<option value="http://libguides.marquette.edu/encyclopedias">Encyclopedias</option>
-					<option value="http://libguides.marquette.edu/engineeringdatabases">Engineering</option>
-					<option value="http://libguides.marquette.edu/envethicsdatabases">Environmental Ethics</option>
-					<option value="http://libguides.marquette.edu/envscidatabases">Environmental Sciences</option>
-					<option value="http://libguides.marquette.edu/ethnicdatabases">Ethnic Studies</option>
-					<option value="http://libguides.marquette.edu/filmdatabases">Film</option>
-					<option value="http://libguides.marquette.edu/financedatabases">Finance</option>
-					<option value="http://libguides.marquette.edu/artdatabases">Fine Arts</option>
-					<option value="http://libguides.marquette.edu/foladatabases">Foreign Languages &amp; Literatures</option>
-					<option value="http://libguides.marquette.edu/foundationdatabases">Foundation and Nonprofit Research</option>
-					<option value="http://libguides.marquette.edu/frenchdatabases">French</option>
-					<option value="http://libguides.marquette.edu/germandatabases">German</option>
-					<option value="http://libguides.marquette.edu/governmentdatabases">Government</option>
-					<option value="http://libguides.marquette.edu/healthdatabases">Health Sciences</option>
-					<option value="http://libguides.marquette.edu/historydatabases">History</option>
-					<option value="http://libguides.marquette.edu/tax">Income Tax Forms and Information</option>
-					<option value="http://libguides.marquette.edu/italiandatabases">Italian</option>
-					<option value="http://libguides.marquette.edu/journalismdatabases">Journalism</option>
-					<option value="http://libguides.marquette.edu/linguisticsdatabases">Language and Linguistics</option>
-					<option value="http://libguides.marquette.edu/lawdatabases">Law</option>
-					<option value="http://libguides.marquette.edu/leadershipdatabases">Leadership Studies</option>
-					<option value="http://libguides.marquette.edu/librarysciencedatabases">Library &amp; Information Science</option>
-					<option value="http://libguides.marquette.edu/literaturedatabases">Literature (English)</option>
-					<option value="http://libguides.marquette.edu/mathdatabases">Mathematics</option>
-					<option value="http://libguides.marquette.edu/medievaldatabases">Medieval Studies</option>
-					<option value="http://libguides.marquette.edu/milwaukeedatabases">Milwaukee</option>
-					<option value="http://libguides.marquette.edu/performingartsdatabases">Music</option>
-					<option value="http://libguides.marquette.edu/newspaperdatabases">Newspapers</option>
-					<option value="http://libguides.marquette.edu/nursingdatabases">Nursing</option>
-					<option value="http://libguides.marquette.edu/performingartsdatabases">Performing Arts</option>
-					<option value="http://libguides.marquette.edu/philosophydatabases">Philosophy</option>
-					<option value="http://libguides.marquette.edu/ptdatabases">Physical Therapy</option>
-					<option value="http://libguides.marquette.edu/padatabases">Physician Assistant</option>
-					<option value="http://libguides.marquette.edu/physicsdatabases">Physics</option>
-					<option value="http://libguides.marquette.edu/poscdatabases">Political Science</option>
-					<option value="http://libguides.marquette.edu/psychologydatabases">Psychology</option>
-					<option value="http://libguides.marquette.edu/prdatabases">Public Relations</option>
-					<option value="http://libguides.marquette.edu/sciencedatabases">Science, general &amp; popular</option>
-					<option value="http://libguides.marquette.edu/sowjdatabases">Social Welfare &amp; Justice</option>
-					<option value="http://libguides.marquette.edu/sociologydatabases">Sociology</option>
-					<option value="http://libguides.marquette.edu/spanishdatabases">Spanish</option>
-					<option value="http://libguides.marquette.edu/sppadatabases">Speech Pathology &amp; Audiology</option>
-					<option value="http://libguides.marquette.edu/sportsdatabases">Sports</option>
-					<option value="http://libguides.marquette.edu/sportsdatabases">Sports Leadership</option>
-					<option value="http://libguides.marquette.edu/statsdatabases">Statistical Resources</option>
-					<option value="http://libguides.marquette.edu/tax">Tax Forms and Information</option>
-					<option value="http://libguides.marquette.edu/performingartsdatabases">Theater Arts</option>
-					<option value="http://libguides.marquette.edu/theodatabases">Theology</option>
-					<option value="http://libguides.marquette.edu/cllsdatabases">Transfusion Medicine</option>
-					<option value="http://libguides.marquette.edu/milwaukeedatabases">Wisconsin</option>
-					<option value="http://libguides.marquette.edu/wostdatabases">Women's and Gender Studies</option>
+					<option value="https://library.uww.edu/databases-by-subject/general-databases">General &amp; Multidisciplinary</option>
+					<option value="https://library.uww.edu/databases-by-subject/arts-databases">Arts</option>
+					<option value="https://library.uww.edu/databases-by-subject/business-databases">Business</option>
+					<option value="https://library.uww.edu/databases-by-subject/education-databasess">Education</option>
+					<option value="https://library.uww.edu/databases-by-subject/government-databases">Government</option>
+					<option value="https://library.uww.edu/databases-by-subject/humanities-databases">Humanities</option>
+					<option value="https://library.uww.edu/databases-by-subject/law-databases">Law</option>
+					<option value="https://library.uww.edu/databases-by-subject/medicine-databases">Medicine</option>
+					<option value="https://library.uww.edu/databases-by-subject/science-databases">Science</option>
+					<option value="https://library.uww.edu/databases-by-subject/social-science-databases">Social Science</option>
 				</select>
 				<input type="button" name="Submit" id="Submit" value="Go to Subject">
 			</form>
@@ -354,13 +281,10 @@ The HTML ordered list below contains the 3 links you see on the first tab, Resea
 
 			<ul class="links">
 				<li>
-				<a href="http://libguides.marquette.edu/databases" title="Go to complete list of databases" target="_blank" onclick="_gaq.push(['_trackEvent', 'D2L_Search_Widget', 'Databases List']);">A to Z Database List</a>
+				<a href="https://library.uww.edu/databases-by-title" title="Go to complete list of databases" target="_blank" onclick="_gaq.push(['_trackEvent', 'D2L_Search_Widget', 'Databases List']);">A to Z Database List</a>
 				</li>
 				<li>
-				<a href="http://libguides.marquette.edu/newtrialdatabases" title="Scheduled Databases Outages" target="_blank" onclick="_gaq.push(['_trackEvent', 'D2L_Search_Widget', 'New Databases']);">New Databases and Trials</a>
-				</li>
-				<li>
-				<a href="http://www.marquette.edu/library/services/off_campus_access.shtml" title="Get off campus access" target="_blank" onclick="_gaq.push(['_trackEvent', 'D2L_Search_Widget', 'Off Campus']);">Off campus access</a>
+				<a href="http://library.uww.edu/get-help/off-campus-login-information" title="Get off campus access" target="_blank" onclick="_gaq.push(['_trackEvent', 'D2L_Search_Widget', 'Off Campus']);">Off campus access</a>
 				</li>
 			</ul>
 
@@ -370,7 +294,7 @@ The HTML ordered list below contains the 3 links you see on the first tab, Resea
 The code references Marquette's Library Help chat window and points to the location of the Ask a Librarian image. You will need to change this to reflect your instuions set up. 
 !-->
 
-			<a href="#" onclick="window.open('http://libraryh3lp.com/chat/mu_askus@chat.libraryh3lp.com?skin=13600&amp;theme=gota&amp;title=Ask+a+Librarian&amp;identity=librarian&amp;sounds=true#', 'chat', 'resizable=1,width=400,height=400'); return false;"><img title="Click here to go to the Ask a Librarian page" alt="Click here to go to the Ask a Librarian page" class="librarian_chat" src="http://www.marquette.edu/library/images/ask.jpg" width="83" height="53"/></a>
+			<a href="#" onclick="window.open('http://library.uww.edu/get-help/ask-a-librarian'); return false;"><img title="Click here to go to the Ask a Librarian page" alt="Click here to go to the Ask a Librarian page" class="librarian_chat" src="http://www.uww.edu/images/library/chatnow.png" width="50" height="48"/></a>
 
 			<!-- END STEP #8 ASK A LIBRARIAN IM CHAT CODE !-->
 
